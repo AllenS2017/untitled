@@ -15,6 +15,7 @@ public class PlayerReinforcements {
     private boolean reinforcementMode;
     public static HashMap<UUID, PlayerReinforcements> playerReinforcementsHashMap = new HashMap<>();
     private boolean groupReinforcementMode;
+    private GroupReinforcements groupReinforcements;
 
     public PlayerReinforcements(Player playerName){
         this.playerName = playerName;
@@ -36,20 +37,33 @@ public class PlayerReinforcements {
         }
     }
 
-    public void changeGroupReinforcementMode(Player player, GroupReinforcements groupReinforcements) {
+    public void changeGroupReinforcementMode(Player player) {
         this.playerName = player;
 
         if (this.isGroupReinforcementMode()) {
-            playerName.sendMessage("You have now turned off reinforcement mode for  " + groupReinforcements.getNameOfGroup());
+            playerName.sendMessage("You have now turned off reinforcement mode for  " + this.groupReinforcements.getNameOfGroup());
             this.setGroupReinforcementMode(false);
         } else if (!this.isGroupReinforcementMode() || this.isReinforcementMode()) {
-            playerName.sendMessage("You have switched to Group reinforcement mode to " + groupReinforcements.getNameOfGroup());
+            playerName.sendMessage("You have switched to Group reinforcement mode to " + this.groupReinforcements.getNameOfGroup());
             this.setGroupReinforcementMode(true);
             this.setReinforcementMode(false);
         } else {
-            playerName.sendMessage("You have now turned on reinforcement mode for " + groupReinforcements.getNameOfGroup());
+            playerName.sendMessage("You have now turned on reinforcement mode for " + this.groupReinforcements.getNameOfGroup());
             this.setGroupReinforcementMode(true);
         }
+    }
+
+    public GroupReinforcements getGroupReinforcements() {
+        return groupReinforcements;
+    }
+
+    public void setGroupReinforcements(GroupReinforcements groupReinforcements) {
+        if (!groupReinforcements.getGroupReinforcementsHashMap().containsKey(this.playerName.getUniqueId())) {
+            playerName.sendMessage(ChatColor.RED + "You are not a part of this group");
+            return;
+        }
+
+        this.groupReinforcements = groupReinforcements;
     }
 
     public boolean isGroupReinforcementMode() {

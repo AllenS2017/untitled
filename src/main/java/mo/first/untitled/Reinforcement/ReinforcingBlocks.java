@@ -40,15 +40,13 @@ public class ReinforcingBlocks implements Listener {
             PlayerReinforcements.playerReinforcementsHashMap.put(playerID, playerReinforcements);
         }
         boolean singleReinforcement = playerReinforcements.isReinforcementMode();
-        boolean groupReinforcment = playerReinforcements.isGroupReinforcementMode();
+        boolean groupReinforcement = playerReinforcements.isGroupReinforcementMode();
 
-        groupReinforcements = GroupReinforcements.getPublicGroupReinforcement().getOrDefault(playerID, null);
+        // groupReinforcements = GroupReinforcements.getPublicGroupReinforcement().getOrDefault(playerID, null);
 
-        if (groupReinforcment) {
+        if (groupReinforcement) {
             groupReinforcement(player, groupReinforcements, e);
         }
-
-
         if (singleReinforcement) {
             singleReinforcement(player, playerReinforcements, e);
         }
@@ -176,7 +174,6 @@ public class ReinforcingBlocks implements Listener {
 
         if (group) {
             GroupReinforcements groupReinforcements = GroupReinforcements.getPublicGroupReinforcement().get(player.getUniqueId());
-            ;
             groupReinforcements.getGroupReinforcedBlocks().add(reinforcedBlocks);
         } else {
             PlayerReinforcements playerReinforcements = PlayerReinforcements.playerReinforcementsHashMap.get(player.getUniqueId());
