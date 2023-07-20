@@ -99,16 +99,16 @@ public class GroupReinforcements {
         groupAdmin.sendMessage(ChatColor.RED + "You have relinquished ownership of the group to " + player.getName());
     }
 
-    public void displayGroupMembers(Player player) {
+    public void displayGroupMembers(Player player, GroupReinforcements groupReinforcements) {
         if (player != this.getGroupAdmin() && !this.getPlayerArrayList().contains(player)) {
             player.sendMessage(ChatColor.RED + "You are not in this group");
             return;
         }
-        if (this.getPlayerArrayList().isEmpty()) {
+        if (groupReinforcements.getPlayerArrayList().isEmpty()) {
             player.sendMessage(ChatColor.RED + "There is no one in the group besides the admin");
             return;
         }
-        player.sendMessage(ChatColor.AQUA + "The group admin is: " + this.getGroupAdmin() + " and the members are " + getPlayerNamesAsString());
+        player.sendMessage(ChatColor.AQUA + "The group admin is: " + this.getGroupAdmin() + " and the members are " + groupReinforcements.getPlayerNamesAsString());
     }
 
     public HashMap<UUID, GroupReinforcements> getGroupReinforcementsHashMap() {

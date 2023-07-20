@@ -148,7 +148,22 @@ public class PlayerCommands implements CommandExecutor {
                     p.sendMessage(ChatColor.AQUA + playerToGiveOwnership.getName() + " has been given ownership of the group");
                     return true;
                 }
+                if (subcommand.equalsIgnoreCase("display")) {
+                    if (args.length < 2) {
+                        p.sendMessage(ChatColor.RED + "You need to specify a name to give ownership to");
+                        return false;
+                    }
 
+                    String groupName = args[1];
+                    GroupReinforcements groupReinforcements = GroupReinforcements.getGroupNames().getOrDefault(groupName, null);
+                    if (groupReinforcements == null) {
+                        p.sendMessage(ChatColor.RED + "This group name" + groupName + "does not exist, please check your spelling");
+                        return false;
+                    }
+
+                    groupReinforcements.displayGroupMembers(p, groupReinforcements);
+                    return true;
+                }
             }
         }
         return false;
