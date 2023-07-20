@@ -2,7 +2,9 @@ package mo.first.untitled.PlayerHandling;
 
 import mo.first.untitled.Reinforcement.ReinforcedBlocks;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,10 +18,14 @@ public class PlayerReinforcements {
     public static HashMap<UUID, PlayerReinforcements> playerReinforcementsHashMap = new HashMap<>();
     private boolean groupReinforcementMode;
     private GroupReinforcements groupReinforcements;
+    private boolean reinforcementPlaceMode;
 
-    public PlayerReinforcements(Player playerName){
+    public PlayerReinforcements(Player playerName) {
         this.playerName = playerName;
         this.groupReinforcements = null;
+        this.reinforcementMode = false;
+        this.groupReinforcementMode = false;
+        this.reinforcementPlaceMode = false;
     }
 
     public void changeReinforcementMode(Player player) {
@@ -54,8 +60,28 @@ public class PlayerReinforcements {
         }
     }
 
-    public GroupReinforcements getGroupReinforcements() {
-        return groupReinforcements;
+    public void changePlaceMode(Player player, boolean forGroup) {
+        // forGroup is true when player wants to place blocks for a group
+        // forGroup is false when player wants to place blocks for himself
+        if (forGroup) {
+            // Setting for group reinforcement mode
+            this.setGroupReinforcementMode(true);
+            this.setReinforcementMode(false);
+            player.sendMessage(ChatColor.AQUA + "You have started group reinforcement place mode");
+        } else {
+            // Setting for individual reinforcement mode
+            this.setGroupReinforcementMode(false);
+            this.setReinforcementMode(true);
+            player.sendMessage(ChatColor.AQUA + "You have started individual reinforcement place mode");
+        }
+
+        this.setReinforcementPlaceMode(true); // setting place mode on when either group or individual reinforcement mode is chosen
+    }
+
+    public void stopPlaceMode(Player player) {
+        // turn off reinforcementPlaceMode
+        this.setReinforcementPlaceMode(false);
+        player.sendMessage(ChatColor.AQUA + "You have stopped the reinforcement place mode");
     }
 
     public void setGroupReinforcements(GroupReinforcements groupReinforcements) {
@@ -65,6 +91,18 @@ public class PlayerReinforcements {
         }
 
         this.groupReinforcements = groupReinforcements;
+    }
+
+    public GroupReinforcements getGroupReinforcements() {
+        return groupReinforcements;
+    }
+
+    public boolean isReinforcementPlaceMode() {
+        return reinforcementPlaceMode;
+    }
+
+    public void setReinforcementPlaceMode(boolean reinforcementPlaceMode) {
+        this.reinforcementPlaceMode = reinforcementPlaceMode;
     }
 
     public boolean isGroupReinforcementMode() {

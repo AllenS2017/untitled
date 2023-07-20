@@ -12,6 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -117,14 +118,46 @@ public class ReinforcingBlocks implements Listener {
         }
     }
 
+    @EventHandler
+    public void placeReinforcedBlocks(BlockPlaceEvent e) {
+
+        PlayerReinforcements playerReinforcements;
+        Player player = e.getPlayer();
+        UUID playerID = player.getUniqueId();
+
+        if (PlayerReinforcements.playerReinforcementsHashMap.containsKey(player.getUniqueId())) {
+            playerReinforcements = PlayerReinforcements.playerReinforcementsHashMap.get(playerID);
+        } else {
+            playerReinforcements = new PlayerReinforcements(e.getPlayer());
+            PlayerReinforcements.playerReinforcementsHashMap.put(playerID, playerReinforcements);
+        }
+
+        if (!playerReinforcements.isReinforcementMode() && !playerReinforcements.isGroupReinforcementMode()) {
+            return;
+        }
+
+        if (!playerReinforcements.isReinforcementPlaceMode())
+            return;
+
+
+        if (playerReinforcements.isReinforcementMode()) {
+            // code to place the block for the player himself
+        } else if (playerReinforcements.isGroupReinforcementMode()) {
+            // code to place the block for the group
+        }
+
+        e.getBlock().getLocation();
+
+    }
+
     // Command should only be available to admins
-    public void removeAllReinforcements(Player player){
+    public void removeAllReinforcements(Player player) {
 
         // If the HashMap is empty, the player is told there is no reinforced blocks to remove.
-        if (reinforcedBlocksMap.isEmpty()){
+        if (reinforcedBlocksMap.isEmpty()) {
             player.sendMessage(ChatColor.AQUA + "There is no reinforced blocks");
         } else {
-            for (Map.Entry<Location, ReinforcedBlocks> entry : reinforcedBlocksMap.entrySet()){
+            for (Map.Entry<Location, ReinforcedBlocks> entry : reinforcedBlocksMap.entrySet()) {
                 Location location = entry.getKey();
                 ReinforcedBlocks reinforcedBlocks = entry.getValue();
 
