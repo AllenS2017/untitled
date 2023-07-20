@@ -4,10 +4,7 @@ import mo.first.untitled.Reinforcement.ReinforcedBlocks;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class GroupReinforcements {
@@ -110,6 +107,26 @@ public class GroupReinforcements {
         }
         player.sendMessage(ChatColor.AQUA + "The group admin is: " + this.getGroupAdmin() + " and the members are " + groupReinforcements.getPlayerNamesAsString());
     }
+
+    public static void displayAssociatedGroups(Player player) {
+        // We'll collect the names of the groups to which the player belongs in this list
+        List<String> playerGroups = new ArrayList<>();
+
+        // Go through each group in the publicGroupReinforcement map
+        for (Map.Entry<UUID, GroupReinforcements> entry : publicGroupReinforcement.entrySet()) {
+            GroupReinforcements group = entry.getValue();
+
+            // If this group contains the player in its playerArrayList, add the group's name to the playerGroups list
+            if (group.getPlayerArrayList().contains(player)) {
+                playerGroups.add(group.getNameOfGroup());
+            }
+        }
+
+        // Now print the names of the groups. We join them with a comma for a cleaner output
+        String groupsString = String.join(", ", playerGroups);
+        player.sendMessage(ChatColor.AQUA + "You are a member of the following groups: " + groupsString);
+    }
+
 
     public HashMap<UUID, GroupReinforcements> getGroupReinforcementsHashMap() {
         return groupReinforcementsHashMap;

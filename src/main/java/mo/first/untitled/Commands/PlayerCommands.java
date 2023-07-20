@@ -50,8 +50,6 @@ public class PlayerCommands implements CommandExecutor {
                     return true;
                 }
                 if (subcommand.equalsIgnoreCase("grouprm")) {
-
-
                     if (playerReinforcements.getGroupReinforcements() == null) {
                         p.sendMessage(ChatColor.RED + " You are not part of a group");
                         return false;
@@ -77,6 +75,10 @@ public class PlayerCommands implements CommandExecutor {
                     p.sendMessage(ChatColor.AQUA + "You have changed to group " + playerReinforcements.getGroupReinforcements().getNameOfGroup());
                     return true;
 
+                }
+                if (subcommand.equalsIgnoreCase("mygroups")) {
+                    GroupReinforcements.displayAssociatedGroups(p);
+                    return true;
                 }
                 if (subcommand.equalsIgnoreCase("create")) {
                     if (args.length < 2) {
