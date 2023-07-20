@@ -19,16 +19,17 @@ public class PlayerReinforcements {
 
     public PlayerReinforcements(Player playerName){
         this.playerName = playerName;
+        this.groupReinforcements = null;
     }
 
-    public void changeReinforcementMode(Player player, GroupReinforcements groupReinforcements) {
+    public void changeReinforcementMode(Player player) {
         this.playerName = player;
 
         if (this.isReinforcementMode()) {
             playerName.sendMessage(ChatColor.RED + "Reinforcement mode has been turned off");
             this.setReinforcementMode(false);
         } else if (!this.isReinforcementMode() || this.isGroupReinforcementMode()) {
-            playerName.sendMessage(ChatColor.AQUA + "Group reinforcement mode for " + groupReinforcements.getNameOfGroup() + " has been turned off for individual reinforcement");
+            playerName.sendMessage(ChatColor.AQUA + "Group reinforcement mode for " + this.groupReinforcements.getNameOfGroup() + " has been turned off for individual reinforcement");
             this.setReinforcementMode(true);
             this.setGroupReinforcementMode(false);
         } else {

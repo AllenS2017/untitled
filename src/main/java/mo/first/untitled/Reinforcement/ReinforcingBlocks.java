@@ -42,7 +42,7 @@ public class ReinforcingBlocks implements Listener {
         boolean singleReinforcement = playerReinforcements.isReinforcementMode();
         boolean groupReinforcement = playerReinforcements.isGroupReinforcementMode();
 
-        // groupReinforcements = GroupReinforcements.getPublicGroupReinforcement().getOrDefault(playerID, null);
+        groupReinforcements = playerReinforcements.getGroupReinforcements();
 
         if (groupReinforcement) {
             groupReinforcement(player, groupReinforcements, e);
@@ -147,16 +147,14 @@ public class ReinforcingBlocks implements Listener {
         return "Required Hits: " + reinforcedBlocks.getRequiredHits();
     }
 
-    private void ironReinforcement(ItemStack itemInHand, Player player, Block blockClicked, boolean group) {
+    private void ironReinforcement(ItemStack itemInHand, Player player, Block blockClicked, boolean group, GroupReinforcements groupReinforcements, PlayerReinforcements playerReinforcements) {
         player.sendMessage("You reinforced this block at " + blockClicked.getLocation());
         ReinforcedBlocks reinforcedBlocks = new ReinforcedBlocks(blockClicked.getLocation(), REQUIRED_HITS_IRON);
         reinforcedBlocksMap.put(blockClicked.getLocation(), reinforcedBlocks);
 
         if (group) {
-            GroupReinforcements groupReinforcements = GroupReinforcements.getPublicGroupReinforcement().get(player.getUniqueId());
             groupReinforcements.getGroupReinforcedBlocks().add(reinforcedBlocks);
         } else {
-            PlayerReinforcements playerReinforcements = PlayerReinforcements.playerReinforcementsHashMap.get(player.getUniqueId());
             playerReinforcements.getPlayerReinforcedBlocks().add(reinforcedBlocks);
         }
 
@@ -167,16 +165,14 @@ public class ReinforcingBlocks implements Listener {
         }
     }
 
-    private void diamondReinforcement(ItemStack itemInHand, Player player, Block blockClicked, boolean group) {
+    private void diamondReinforcement(ItemStack itemInHand, Player player, Block blockClicked, boolean group, GroupReinforcements groupReinforcements, PlayerReinforcements playerReinforcements) {
         player.sendMessage("You reinforced this block at " + blockClicked.getLocation());
         ReinforcedBlocks reinforcedBlocks = new ReinforcedBlocks(blockClicked.getLocation(), REQUIRED_HITS_DIAMOND);
         reinforcedBlocksMap.put(blockClicked.getLocation(), reinforcedBlocks);
 
         if (group) {
-            GroupReinforcements groupReinforcements = GroupReinforcements.getPublicGroupReinforcement().get(player.getUniqueId());
             groupReinforcements.getGroupReinforcedBlocks().add(reinforcedBlocks);
         } else {
-            PlayerReinforcements playerReinforcements = PlayerReinforcements.playerReinforcementsHashMap.get(player.getUniqueId());
             playerReinforcements.getPlayerReinforcedBlocks().add(reinforcedBlocks);
         }
 
@@ -212,10 +208,10 @@ public class ReinforcingBlocks implements Listener {
                 // If the item is diamond or an iron ingot, the block is added to the HashMap as a new reinforcedBlock location
                 // The itemInHand is then - 1 from the stack or replaced with air if there is 1 item left.
                 if (itemType == Material.DIAMOND) {
-                    diamondReinforcement(itemInHand, player, blockClicked, group);
+                    diamondReinforcement(itemInHand, player, blockClicked, group, groupReinforcements, null);
                 }
                 if (itemType == Material.IRON_INGOT) {
-                    ironReinforcement(itemInHand, player, blockClicked, group);
+                    ironReinforcement(itemInHand, player, blockClicked, group, groupReinforcements, null);
                 }
             }
         }
@@ -245,10 +241,10 @@ public class ReinforcingBlocks implements Listener {
                 // If the item is diamond or an iron ingot, the block is added to the HashMap as a new reinforcedBlock location
                 // The itemInHand is then - 1 from the stack or replaced with air if there is 1 item left.
                 if (itemType == Material.DIAMOND) {
-                    diamondReinforcement(itemInHand, player, blockClicked, group);
+                    diamondReinforcement(itemInHand, player, blockClicked, group, null, playerReinforcements);
                 }
                 if (itemType == Material.IRON_INGOT) {
-                    ironReinforcement(itemInHand, player, blockClicked, group);
+                    ironReinforcement(itemInHand, player, blockClicked, group, null, playerReinforcements);
                 }
             }
         }

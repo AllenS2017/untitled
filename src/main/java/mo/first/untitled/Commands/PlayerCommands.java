@@ -20,6 +20,7 @@ public class PlayerCommands implements CommandExecutor {
 
         if (sender instanceof Player){
             Player p = (Player) sender;
+            UUID playerID = p.getUniqueId();
 
             if (command.getName().equalsIgnoreCase("test")){
                 p.sendMessage(ChatColor.GOLD + "Wassup");
@@ -28,23 +29,6 @@ public class PlayerCommands implements CommandExecutor {
             if(command.getName().equalsIgnoreCase("ClearReinforcements")){
                 new ReinforcingBlocks().removeAllReinforcements(p);
             }
-            if (command.getName().equalsIgnoreCase("rm")) {
-                UUID playerID = p.getUniqueId();
-
-                PlayerReinforcements playerReinforcements;
-                if (PlayerReinforcements.playerReinforcementsHashMap.containsKey(playerID)) {
-                    playerReinforcements = PlayerReinforcements.playerReinforcementsHashMap.get(playerID);
-                } else {
-                    playerReinforcements = new PlayerReinforcements(p);
-                    PlayerReinforcements.playerReinforcementsHashMap.put(playerID, playerReinforcements);
-                }
-                GroupReinforcements groupReinforcements;
-                groupReinforcements = GroupReinforcements.getPublicGroupReinforcement().getOrDefault(playerID, null);
-
-
-                playerReinforcements.changeReinforcementMode(p, groupReinforcements);
-                return true;
-            }
             if (command.getName().equalsIgnoreCase("bunker")) {
                 if (args.length == 0) {
                     p.sendMessage(ChatColor.RED + "You need to provide arguments for bunker");
@@ -52,7 +36,32 @@ public class PlayerCommands implements CommandExecutor {
                 }
 
                 String subcommand = args[0];
+                PlayerReinforcements playerReinforcements;
+                if (PlayerReinforcements.playerReinforcementsHashMap.containsKey(playerID)) {
+                    playerReinforcements = PlayerReinforcements.playerReinforcementsHashMap.get(playerID);
+                } else {
+                    playerReinforcements = new PlayerReinforcements(p);
+                    PlayerReinforcements.playerReinforcementsHashMap.put(playerID, playerReinforcements);
+                }
 
+                if (subcommand.equalsIgnoreCase("rm")) {
+
+                    playerReinforcements.changeReinforcementMode(p);
+                    return true;
+                }
+                if (subcommand.equalsIgnoreCase("grouprm")) {
+
+                    if (playerReinforcements.getGroupReinforcements() == null) {
+                        p.sendMessage(ChatColor.RED + " You are not part of a group");
+                        return false;
+                    }
+                    playerReinforcements.changeGroupReinforcementMode(p);
+                    return true;
+
+                }
+                if (subcommand.equalsIgnoreCase("changegroup")) {
+
+                }
                 if (subcommand.equalsIgnoreCase("create")) {
                     if (args.length < 2) {
                         p.sendMessage(ChatColor.RED + "You need to specify a name for the group");
@@ -164,8 +173,18 @@ public class PlayerCommands implements CommandExecutor {
                     groupReinforcements.displayGroupMembers(p, groupReinforcements);
                     return true;
                 }
+
             }
         }
         return false;
     }
+//      TODO: OOptimize code to stop repeating so much
+//    private GroupReinforcements convertStringToGroup(Player p, GroupReinforcements groupReinforcements, String str){
+//        groupReinforcements = GroupReinforcements.getGroupNames().getOrDefault(str, null);
+//        if (groupReinforcements == null) {
+//            p.sendMessage(ChatColor.RED + "This group name" + str + "does not exist, please check your spelling");
+//            return null;
+//        }
+//        return groupReinforcements;
+//    }
 }
