@@ -1,6 +1,7 @@
 package mo.first.untitled.PlayerHandling;
 
 import mo.first.untitled.Reinforcement.ReinforcedBlocks;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -28,6 +29,21 @@ public class GroupReinforcements {
             this.groupAdmin = groupAdmin;
             this.nameOfGroup = nameOfGroup;
         }
+    }
+
+    public void addToGroup(Player groupAdmin, Player player, GroupReinforcements groupReinforcements) {
+        if (groupAdmin != this.groupAdmin) {
+            groupAdmin.sendMessage(ChatColor.RED + "You are not a group admin");
+            return;
+        }
+        if (groupReinforcements.getPlayerArrayList().contains(player)) {
+            groupAdmin.sendMessage(ChatColor.RED + "This player is currently inside the group");
+            return;
+        }
+        if (groupReinforcements == null) {
+            groupAdmin.sendMessage(ChatColor.RED + "You attempted to add ");
+        }
+
     }
 
     public HashMap<UUID, GroupReinforcements> getGroupReinforcementsHashMap() {
