@@ -42,45 +42,17 @@ public class ReinforcingBlocks implements Listener {
             PlayerReinforcements.playerReinforcementsHashMap.put(playerID, playerReinforcements);
         }
         boolean bypassReinforcement = playerReinforcements.isReinforcementMode();
+        boolean groupReinforcment = playerReinforcements.isGroupReinforcementMode();
 
-        if (groupReinforcements.getPublicGroupReinforcement().containsValue(playerID)) {
+        groupReinforcements = GroupReinforcements.getPublicGroupReinforcement().getOrDefault(playerID, null);
 
+        if (groupReinforcment) {
+            groupReinforcement(player, groupReinforcements, e);
         }
 
 
-        if (!playerReinforcements.isReinforcementMode()) {
-
-
-            return;
-        }
-
-
-        if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-
-            Block blockClicked = e.getClickedBlock();
-            ItemStack itemInHand = e.getPlayer().getInventory().getItemInMainHand();
-
-            // Performs a check to see if a block is in the HashMap and already reinforced
-            if (reinforcedBlocksMap.containsKey(blockClicked.getLocation())) {
-                player.sendMessage("This block is already reinforced");
-                return;
-            }
-
-            // Checking if there is an item in hand and the value is not null
-            if (itemInHand != null && itemInHand.getType() != null) {
-
-                // Passes itemInHand to the itemType variable to run checks with that.
-                Material itemType = itemInHand.getType();
-
-                // If the item is diamond or an iron ingot, the block is added to the HashMap as a new reinforcedBlock location
-                // The itemInHand is then - 1 from the stack or replaced with air if there is 1 item left.
-                if (itemType == Material.DIAMOND) {
-                    diamondReinforcement(itemInHand, player, blockClicked);
-                }
-                if (itemType == Material.IRON_INGOT) {
-                    ironReinforcement(itemInHand, player, blockClicked);
-                }
-            }
+        if (bypassReinforcement) {
+            singleReinforcement(player, playerReinforcements, e);
         }
     }
 
@@ -201,14 +173,40 @@ public class ReinforcingBlocks implements Listener {
         }
     }
 
-    private void groupReinforcement(Player player, UUID playerID, GroupReinforcements groupReinforcements, PlayerInteractEvent e) {
+    private void groupReinforcement(Player player, GroupReinforcements groupReinforcements, PlayerInteractEvent e) {
 
-        if (groupReinforcements.getPlayerArrayList().contains(player)) {
-            groupReinforcements = groupReinforcements.getGroupReinforcementsHashMap().get(playerID);
-        } else {
-            player.sendMessage("There is no group of that name created yet");
-            return;
+
+        if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+
+            Block blockClicked = e.getClickedBlock();
+            ItemStack itemInHand = e.getPlayer().getInventory().getItemInMainHand();
+
+            // Performs a check to see if a block is in the HashMap and already reinforced
+            if (reinforcedBlocksMap.containsKey(blockClicked.getLocation())) {
+                player.sendMessage("This block is already reinforced");
+                return;
+            }
+
+            // Checking if there is an item in hand and the value is not null
+            if (itemInHand != null && itemInHand.getType() != null) {
+
+                // Passes itemInHand to the itemType variable to run checks with that.
+                Material itemType = itemInHand.getType();
+
+                // If the item is diamond or an iron ingot, the block is added to the HashMap as a new reinforcedBlock location
+                // The itemInHand is then - 1 from the stack or replaced with air if there is 1 item left.
+                if (itemType == Material.DIAMOND) {
+                    diamondReinforcement(itemInHand, player, blockClicked);
+                }
+                if (itemType == Material.IRON_INGOT) {
+                    ironReinforcement(itemInHand, player, blockClicked);
+                }
+            }
         }
+    }
+
+    private void singleReinforcement(Player player, PlayerReinforcements playerReinforcements, PlayerInteractEvent e) {
+
 
         if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
 
