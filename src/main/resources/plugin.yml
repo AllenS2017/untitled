@@ -1,0 +1,11 @@
+name: untitled
+version: '${project.version}'
+main: mo.first.untitled.Untitled
+api-version: '1.20'
+commands:
+  test:
+    description: test
+  ClearReinforcements:
+    description: Removes all reinforcements
+  rm:
+    description: Toggles reinforcement mode, allows you to bypass yours and create new ones
