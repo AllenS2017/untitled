@@ -16,7 +16,7 @@ public class GroupReinforcements {
     private ArrayList<ReinforcedBlocks> groupReinforcedBlocks = new ArrayList<>();
     private ArrayList<Player> playerArrayList = new ArrayList<>();
     private String nameOfGroup;
-    public static HashMap<UUID, GroupReinforcements> publicGroupReinforcement = new HashMap<>();
+    private static HashMap<UUID, GroupReinforcements> publicGroupReinforcement = new HashMap<>();
     private HashMap<UUID, GroupReinforcements> groupReinforcementsHashMap = new HashMap<>();
 
     private static HashSet<String> groupNames = new HashSet<>();
@@ -27,6 +27,7 @@ public class GroupReinforcements {
         } else {
             publicGroupReinforcement.put(groupAdmin.getUniqueId(), this);
             groupNames.add(nameOfGroup);
+            this.playerArrayList.add(groupAdmin);
             this.groupAdmin = groupAdmin;
             this.nameOfGroup = nameOfGroup;
         }
@@ -94,7 +95,6 @@ public class GroupReinforcements {
             return;
         }
         this.setGroupAdmin(player);
-        this.getPlayerArrayList().add(groupAdmin);
         player.sendMessage(ChatColor.AQUA + "You have been given ownership of the group");
         groupAdmin.sendMessage(ChatColor.RED + "You have relinquished ownership of the group to " + player.getName());
     }
@@ -170,4 +170,11 @@ public class GroupReinforcements {
         return "GroupReinforcements: " + getPlayerNamesAsString();
     }
 
+    public static HashSet<String> getGroupNames() {
+        return groupNames;
+    }
+
+    public static void setGroupNames(HashSet<String> groupNames) {
+        GroupReinforcements.groupNames = groupNames;
+    }
 }

@@ -3,6 +3,7 @@ package mo.first.untitled.Commands;
 import mo.first.untitled.PlayerHandling.GroupReinforcements;
 import mo.first.untitled.PlayerHandling.PlayerReinforcements;
 import mo.first.untitled.Reinforcement.ReinforcingBlocks;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -64,6 +65,30 @@ public class PlayerCommands implements CommandExecutor {
                     return true;
 
                 }
+                if (subcommand.equalsIgnoreCase("add")) {
+                    if (args.length < 2) {
+                        p.sendMessage(ChatColor.RED + "You need to specify a name to add");
+                        return false;
+                    }
+                    if (args.length < 3) {
+                        p.sendMessage(ChatColor.RED + "You need to specify the group name");
+                        return false;
+                    }
+
+
+                    String playerName = args[1];
+                    Player player = Bukkit.getPlayer(playerName);
+
+                    String groupName = args[2];
+
+                    GroupReinforcements groupReinforcements = GroupReinforcements.getGroupNa
+                    if (groupReinforcements == null) {
+                        p.sendMessage(ChatColor.RED + "This group name" + groupName + "does not exist, please check your spelling");
+                    }
+
+
+                }
+
             }
         }
         return false;
