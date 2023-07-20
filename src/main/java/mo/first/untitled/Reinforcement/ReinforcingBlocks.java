@@ -110,7 +110,6 @@ public class ReinforcingBlocks implements Listener {
 
                     }
                 }
-
                 playerReinforcements.getPlayerName().sendMessage("You have broken this block!");
             } else {
                 // If the required hits are not reached, the event is cancelled.

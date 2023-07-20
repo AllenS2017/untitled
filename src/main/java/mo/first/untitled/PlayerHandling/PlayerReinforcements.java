@@ -52,8 +52,6 @@ public class PlayerReinforcements {
         }
     }
 
-///// Getters and setters
-
     public boolean isGroupReinforcementMode() {
         return groupReinforcementMode;
     }

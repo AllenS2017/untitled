@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class GroupReinforcements {
 
@@ -40,7 +41,7 @@ public class GroupReinforcements {
             groupAdmin.sendMessage(ChatColor.RED + "This player does not exist");
             return;
         }
-        if (groupAdmin != this.groupAdmin) {
+        if (groupAdmin != this.getGroupAdmin()) {
             groupAdmin.sendMessage(ChatColor.RED + "You are not a group admin");
             return;
         }
@@ -62,7 +63,7 @@ public class GroupReinforcements {
             groupAdmin.sendMessage(ChatColor.RED + "This player does not exist");
             return;
         }
-        if (groupAdmin != this.groupAdmin) {
+        if (groupAdmin != this.getGroupAdmin()) {
             groupAdmin.sendMessage(ChatColor.RED + "You are not a group admin");
             return;
         }
@@ -84,7 +85,7 @@ public class GroupReinforcements {
             groupAdmin.sendMessage(ChatColor.RED + "This player does not exist");
             return;
         }
-        if (groupAdmin != this.groupAdmin) {
+        if (groupAdmin != this.getGroupAdmin()) {
             groupAdmin.sendMessage(ChatColor.RED + "You are not a group admin");
             return;
         }
@@ -96,6 +97,18 @@ public class GroupReinforcements {
         this.getPlayerArrayList().add(groupAdmin);
         player.sendMessage(ChatColor.AQUA + "You have been given ownership of the group");
         groupAdmin.sendMessage(ChatColor.RED + "You have relinquished ownership of the group to " + player.getName());
+    }
+
+    public void displayGroupMembers(Player player) {
+        if (player != this.getGroupAdmin() && !this.getPlayerArrayList().contains(player)) {
+            player.sendMessage(ChatColor.RED + "You are not in this group");
+            return;
+        }
+        if (this.getPlayerArrayList().isEmpty()) {
+            player.sendMessage(ChatColor.RED + "There is no one in the group besides the admin");
+            return;
+        }
+        player.sendMessage(ChatColor.AQUA + "The group admin is: " + this.getGroupAdmin() + " and the members are " + getPlayerNamesAsString());
     }
 
     public HashMap<UUID, GroupReinforcements> getGroupReinforcementsHashMap() {
@@ -145,4 +158,16 @@ public class GroupReinforcements {
     public void setNameOfGroup(String nameOfGroup) {
         this.nameOfGroup = nameOfGroup;
     }
+
+    public String getPlayerNamesAsString() {
+        return playerArrayList.stream()
+                .map(Player::getName) // get each player's name
+                .collect(Collectors.joining(", ")); // join them with a comma
+    }
+
+    @Override
+    public String toString() {
+        return "GroupReinforcements: " + getPlayerNamesAsString();
+    }
+
 }
