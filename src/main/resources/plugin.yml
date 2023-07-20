@@ -4,17 +4,37 @@ main: mo.first.untitled.Untitled
 api-version: '1.20'
 commands:
   test:
-    description: test
+    description: The test command.
+    usage: /<command>
   ClearReinforcements:
-    description: Removes all reinforcements
-  rm:
-    description: Toggles reinforcement mode
+    description: Clears all player's reinforcements.
+    usage: /<command>
   bunker:
-    description: Command for managing bunkers
-    aliases: [ bunk ]
-    usage: |
-      /<command> create <group_name> - Creates a new bunker group with specified name.
-      /<command> add <player_name> <group_name> - Adds a player to a bunker group.
-      /<command> remove <player_name> <group_name> - Removes a player from a bunker group.
-      /<command> giveOwnership <player_name> <group_name> - Gives ownership of a bunker group to a player.
-      /<command> display <group_name> - Displays all members of a bunker group.
+    description: A main command for various bunker operations.
+    usage: /<command> <subcommand> [additional arguments]
+    aliases: [ b ]
+    subcommands:
+      rm:
+        description: Changes reinforcement mode for the player.
+        usage: /<command> <subcommand>
+      grouprm:
+        description: Changes reinforcement mode for the group.
+        usage: /<command> <subcommand>
+      changegroup:
+        description: Changes the player's group.
+        usage: /<command> <subcommand>
+      create:
+        description: Creates a new group.
+        usage: /<command> <subcommand> <group name>
+      add:
+        description: Adds a player to a group.
+        usage: /<command> <subcommand> <player name> <group name>
+      remove:
+        description: Removes a player from a group.
+        usage: /<command> <subcommand> <player name> <group name>
+      giveOwnership:
+        description: Gives ownership of a group to a player.
+        usage: /<command> <subcommand> <player name> <group name>
+      display:
+        description: Displays members of a group.
+        usage: /<command> <subcommand> <group name>
