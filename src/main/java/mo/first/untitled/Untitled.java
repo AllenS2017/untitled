@@ -1,5 +1,8 @@
 package mo.first.untitled;
 
+import mo.first.untitled.Commands.PlayerCommands;
+import mo.first.untitled.DeathHandling.PlayerDeath;
+import mo.first.untitled.Reinforcement.ReinforcingBlocks;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class Untitled extends JavaPlugin {

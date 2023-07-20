@@ -1,4 +1,4 @@
-package mo.first.untitled;
+package mo.first.untitled.DeathHandling;
 
 import org.bukkit.Location;
 import org.bukkit.Material;

@@ -1,5 +1,7 @@
-package mo.first.untitled;
+package mo.first.untitled.Reinforcement;
 
+import mo.first.untitled.PlayerHandling.GroupReinforcements;
+import mo.first.untitled.PlayerHandling.PlayerReinforcements;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -30,22 +32,30 @@ public class ReinforcingBlocks implements Listener {
         Player player = e.getPlayer();
         UUID playerID = player.getUniqueId();
         PlayerReinforcements playerReinforcements;
+        GroupReinforcements groupReinforcements;
 
         // Checks if the player is currently within the playerReinforcementHashMap, if he is not, a new instance will be created.
-        if (PlayerReinforcements.playerReinforcementsHashMap.containsKey(player.getUniqueId())){
+        if (PlayerReinforcements.playerReinforcementsHashMap.containsKey(player.getUniqueId())) {
             playerReinforcements = PlayerReinforcements.playerReinforcementsHashMap.get(playerID);
         } else {
             playerReinforcements = new PlayerReinforcements(e.getPlayer());
             PlayerReinforcements.playerReinforcementsHashMap.put(playerID, playerReinforcements);
         }
-
         boolean bypassReinforcement = playerReinforcements.isReinforcementMode();
 
-        if (!playerReinforcements.isReinforcementMode())
+        if (groupReinforcements.getPublicGroupReinforcement().containsValue(playerID)) {
+
+        }
+
+
+        if (!playerReinforcements.isReinforcementMode()) {
+
+
             return;
+        }
 
 
-        if (e.getAction() == Action.RIGHT_CLICK_BLOCK){
+        if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
 
             Block blockClicked = e.getClickedBlock();
             ItemStack itemInHand = e.getPlayer().getInventory().getItemInMainHand();
@@ -164,9 +174,9 @@ public class ReinforcingBlocks implements Listener {
         ReinforcedBlocks reinforcedBlocks = new ReinforcedBlocks(blockClicked.getLocation(), REQUIRED_HITS_IRON);
         reinforcedBlocksMap.put(blockClicked.getLocation(), reinforcedBlocks);
 
-        PlayerReinforcements playerReinforcements = PlayerReinforcements.playerReinforcementsHashMap.get(player.getUniqueId());
+        //PlayerReinforcements playerReinforcements = PlayerReinforcements.playerReinforcementsHashMap.get(player.getUniqueId());
 
-        playerReinforcements.getPlayerReinforcedBlocks().add(reinforcedBlocks);
+        //playerReinforcements.getPlayerReinforcedBlocks().add(reinforcedBlocks);
 
         if (itemInHand.getAmount() > 0){
             itemInHand.setAmount(itemInHand.getAmount() - 1);
@@ -179,15 +189,53 @@ public class ReinforcingBlocks implements Listener {
         player.sendMessage("You reinforced this block at " + blockClicked.getLocation());
         ReinforcedBlocks reinforcedBlocks = new ReinforcedBlocks(blockClicked.getLocation(), REQUIRED_HITS_DIAMOND);
         reinforcedBlocksMap.put(blockClicked.getLocation(), reinforcedBlocks);
-        
-        PlayerReinforcements playerReinforcements = PlayerReinforcements.playerReinforcementsHashMap.get(player.getUniqueId());
 
-        playerReinforcements.getPlayerReinforcedBlocks().add(reinforcedBlocks);
+        //PlayerReinforcements playerReinforcements = PlayerReinforcements.playerReinforcementsHashMap.get(player.getUniqueId());
+
+        //playerReinforcements.getPlayerReinforcedBlocks().add(reinforcedBlocks);
 
         if (itemInHand.getAmount() > 0) {
             itemInHand.setAmount(itemInHand.getAmount() - 1);
         } else {
             player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+        }
+    }
+
+    private void groupReinforcement(Player player, UUID playerID, GroupReinforcements groupReinforcements, PlayerInteractEvent e) {
+
+        if (groupReinforcements.getPlayerArrayList().contains(player)) {
+            groupReinforcements = groupReinforcements.getGroupReinforcementsHashMap().get(playerID);
+        } else {
+            player.sendMessage("There is no group of that name created yet");
+            return;
+        }
+
+        if (e.getAction() == Action.RIGHT_CLICK_BLOCK) {
+
+            Block blockClicked = e.getClickedBlock();
+            ItemStack itemInHand = e.getPlayer().getInventory().getItemInMainHand();
+
+            // Performs a check to see if a block is in the HashMap and already reinforced
+            if (reinforcedBlocksMap.containsKey(blockClicked.getLocation())) {
+                player.sendMessage("This block is already reinforced");
+                return;
+            }
+
+            // Checking if there is an item in hand and the value is not null
+            if (itemInHand != null && itemInHand.getType() != null) {
+
+                // Passes itemInHand to the itemType variable to run checks with that.
+                Material itemType = itemInHand.getType();
+
+                // If the item is diamond or an iron ingot, the block is added to the HashMap as a new reinforcedBlock location
+                // The itemInHand is then - 1 from the stack or replaced with air if there is 1 item left.
+                if (itemType == Material.DIAMOND) {
+                    diamondReinforcement(itemInHand, player, blockClicked);
+                }
+                if (itemType == Material.IRON_INGOT) {
+                    ironReinforcement(itemInHand, player, blockClicked);
+                }
+            }
         }
     }
 }

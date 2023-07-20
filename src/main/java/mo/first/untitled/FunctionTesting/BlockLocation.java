@@ -1,4 +1,4 @@
-package mo.first.untitled;
+package mo.first.untitled.FunctionTesting;
 
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
