@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.UUID;
 
 public class GroupReinforcements {
@@ -16,15 +17,17 @@ public class GroupReinforcements {
     public static HashMap<UUID, GroupReinforcements> publicGroupReinforcement = new HashMap<>();
     private HashMap<UUID, GroupReinforcements> groupReinforcementsHashMap = new HashMap<>();
 
+    private static HashSet<String> groupNames = new HashSet<>();
+
     public GroupReinforcements(Player groupAdmin, String nameOfGroup) {
-        this.groupAdmin = groupAdmin;
-
-        // Change namesTaken to a GroupReinforcement object
-        if (namesTaken.contains(nameOfGroup)) {
-            return;
+        if (groupNames.contains(nameOfGroup)) {
+            throw new IllegalArgumentException("The group name " + nameOfGroup + " is already taken.");
+        } else {
+            publicGroupReinforcement.put(groupAdmin.getUniqueId(), this);
+            groupNames.add(nameOfGroup);
+            this.groupAdmin = groupAdmin;
+            this.nameOfGroup = nameOfGroup;
         }
-
-        this.nameOfGroup = nameOfGroup;
     }
 
     public HashMap<UUID, GroupReinforcements> getGroupReinforcementsHashMap() {
