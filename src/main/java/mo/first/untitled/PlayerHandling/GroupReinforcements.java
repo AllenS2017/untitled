@@ -36,6 +36,10 @@ public class GroupReinforcements {
             groupAdmin.sendMessage(ChatColor.RED + "You attempted to add someone to a group that does not exist");
             return;
         }
+        if (player == null) {
+            groupAdmin.sendMessage(ChatColor.RED + "This player does not exist");
+            return;
+        }
         if (groupAdmin != this.groupAdmin) {
             groupAdmin.sendMessage(ChatColor.RED + "You are not a group admin");
             return;
@@ -45,11 +49,17 @@ public class GroupReinforcements {
             return;
         }
         groupReinforcements.getPlayerArrayList().add(player);
+        groupAdmin.sendMessage(ChatColor.AQUA + "You have successfully added " + player.getName() + " to group " + this.getNameOfGroup());
+        player.sendMessage(ChatColor.AQUA + "You have been added to " + this.getNameOfGroup());
     }
 
     public void removeFromGroup(Player groupAdmin, Player player, GroupReinforcements groupReinforcements) {
         if (groupReinforcements == null) {
             groupAdmin.sendMessage(ChatColor.RED + "You attempted to add someone to a group that does not exist");
+            return;
+        }
+        if (player == null) {
+            groupAdmin.sendMessage(ChatColor.RED + "This player does not exist");
             return;
         }
         if (groupAdmin != this.groupAdmin) {
@@ -61,6 +71,8 @@ public class GroupReinforcements {
             return;
         }
         groupReinforcements.getPlayerArrayList().remove(player);
+        groupAdmin.sendMessage(ChatColor.AQUA + "You have successfully removed " + player.getName() + " to group " + this.getNameOfGroup());
+        player.sendMessage(ChatColor.RED + "You have been removed from " + this.getNameOfGroup());
     }
 
     public HashMap<UUID, GroupReinforcements> getGroupReinforcementsHashMap() {
