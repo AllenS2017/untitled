@@ -16,6 +16,7 @@ public final class Untitled extends JavaPlugin {
         getCommand("test").setExecutor(new PlayerCommands());
         getCommand("ClearReinforcements").setExecutor(new PlayerCommands());
         getCommand("rm").setExecutor(new PlayerCommands());
+        getCommand("bunker").setExecutor(new PlayerCommands());
 
     }
 

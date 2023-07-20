@@ -8,4 +8,13 @@ commands:
   ClearReinforcements:
     description: Removes all reinforcements
   rm:
-    description: Toggles reinforcement mode, allows you to bypass yours and create new ones
+    description: Toggles reinforcement mode
+  bunker:
+    description: Command for managing bunkers
+    aliases: [ bunk ]
+    usage: |
+      /<command> create <group_name> - Creates a new bunker group with specified name.
+      /<command> add <player_name> <group_name> - Adds a player to a bunker group.
+      /<command> remove <player_name> <group_name> - Removes a player from a bunker group.
+      /<command> giveOwnership <player_name> <group_name> - Gives ownership of a bunker group to a player.
+      /<command> display <group_name> - Displays all members of a bunker group.
