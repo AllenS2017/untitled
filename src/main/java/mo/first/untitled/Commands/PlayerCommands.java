@@ -51,6 +51,7 @@ public class PlayerCommands implements CommandExecutor {
                 }
                 if (subcommand.equalsIgnoreCase("grouprm")) {
 
+
                     if (playerReinforcements.getGroupReinforcements() == null) {
                         p.sendMessage(ChatColor.RED + " You are not part of a group");
                         return false;
@@ -60,6 +61,21 @@ public class PlayerCommands implements CommandExecutor {
 
                 }
                 if (subcommand.equalsIgnoreCase("changegroup")) {
+                    if (args.length < 2) {
+                        p.sendMessage(ChatColor.RED + "You need to specify a name for the group");
+                        return false;
+                    }
+
+                    String groupName = args[1];
+
+                    GroupReinforcements groupReinforcements = GroupReinforcements.getGroupNames().getOrDefault(groupName, null);
+                    if (groupReinforcements == null) {
+                        p.sendMessage(ChatColor.RED + "This group name" + groupName + "does not exist, please check your spelling");
+                        return false;
+                    }
+                    playerReinforcements.setGroupReinforcements(groupReinforcements);
+                    p.sendMessage(ChatColor.AQUA + "You have changed to group " + playerReinforcements.getGroupReinforcements().getNameOfGroup());
+                    return true;
 
                 }
                 if (subcommand.equalsIgnoreCase("create")) {
