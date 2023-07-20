@@ -15,6 +15,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
+import javax.swing.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +42,7 @@ public class ReinforcingBlocks implements Listener {
             playerReinforcements = new PlayerReinforcements(e.getPlayer());
             PlayerReinforcements.playerReinforcementsHashMap.put(playerID, playerReinforcements);
         }
-        boolean bypassReinforcement = playerReinforcements.isReinforcementMode();
+        boolean singleReinforcement = playerReinforcements.isReinforcementMode();
         boolean groupReinforcment = playerReinforcements.isGroupReinforcementMode();
 
         groupReinforcements = GroupReinforcements.getPublicGroupReinforcement().getOrDefault(playerID, null);
@@ -51,7 +52,7 @@ public class ReinforcingBlocks implements Listener {
         }
 
 
-        if (bypassReinforcement) {
+        if (singleReinforcement) {
             singleReinforcement(player, playerReinforcements, e);
         }
     }
@@ -62,6 +63,7 @@ public class ReinforcingBlocks implements Listener {
         Player player = e.getPlayer();
         UUID playerID = player.getUniqueId();
         PlayerReinforcements playerReinforcements;
+        GroupReinforcements groupReinforcements;
 
         // Checks if the player is currently within the playerReinforcementHashMap, if he is not, a new instance will be created.
         if (PlayerReinforcements.playerReinforcementsHashMap.containsKey(player.getUniqueId())){
@@ -73,6 +75,7 @@ public class ReinforcingBlocks implements Listener {
 
         boolean bypassReinforcement = playerReinforcements.isReinforcementMode();
 
+        groupReinforcements = GroupReinforcements.getPublicGroupReinforcement().getOrDefault(playerID, null);
 
         // Checks if player is in reinforcementMode and the block is in his Array, if true the block will break regardless of reinforcement
 
@@ -89,15 +92,22 @@ public class ReinforcingBlocks implements Listener {
             reinforcedBlocks.setRequiredHits(reinforcedBlocks.getRequiredHits() + 1);
 
             // If the player is bypassing reinforcements and contains the block in their personal array, they can break the block without reaching the reinforcement level
-            if (reinforcedBlocks.getRequiredHits() > reinforcementLevel || (bypassReinforcement && playerReinforcements.getPlayerReinforcedBlocks().contains(reinforcedBlocks)) ) {
+            if (reinforcedBlocks.getRequiredHits() > reinforcementLevel || (bypassReinforcement && playerReinforcements.getPlayerReinforcedBlocks().contains(reinforcedBlocks) || groupReinforcements.getGroupReinforcedBlocks().contains(reinforcedBlocks))) {
                 // If the hits required is greater than the reinforcementLevel, the block is removed from the HashMap and the block is destroyed
                 reinforcedBlocksMap.remove(blockLocation);
 
                 List<ReinforcedBlocks> playerBlocks = playerReinforcements.getPlayerReinforcedBlocks();
+                List<ReinforcedBlocks> groupBlocks = groupReinforcements.getGroupReinforcedBlocks();
 
-                for (int i = 0; i < playerBlocks.size(); i++){
-                    if (playerBlocks.get(i).getLocation().equals(blockLocation)){
+                for (int i = 0; i < playerBlocks.size(); i++) {
+                    if (playerBlocks.get(i).getLocation().equals(blockLocation)) {
                         playerBlocks.remove(i);
+                        break;
+                    }
+                }
+                for (int i = 0; i < groupBlocks.size(); i++) {
+                    if (groupBlocks.get(i).getLocation().equals(blockLocation)) {
+                        groupBlocks.remove(i);
                         break;
                     }
                 }
@@ -174,9 +184,6 @@ public class ReinforcingBlocks implements Listener {
             playerReinforcements.getPlayerReinforcedBlocks().add(reinforcedBlocks);
         }
 
-        //PlayerReinforcements playerReinforcements = PlayerReinforcements.playerReinforcementsHashMap.get(player.getUniqueId());
-
-        //playerReinforcements.getPlayerReinforcedBlocks().add(reinforcedBlocks);
 
         if (itemInHand.getAmount() > 0) {
             itemInHand.setAmount(itemInHand.getAmount() - 1);
