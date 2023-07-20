@@ -16,10 +16,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
 import javax.swing.*;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class ReinforcingBlocks implements Listener {
 
@@ -92,23 +89,25 @@ public class ReinforcingBlocks implements Listener {
             reinforcedBlocks.setRequiredHits(reinforcedBlocks.getRequiredHits() + 1);
 
             // If the player is bypassing reinforcements and contains the block in their personal array, they can break the block without reaching the reinforcement level
-            if (reinforcedBlocks.getRequiredHits() > reinforcementLevel || (bypassReinforcement && playerReinforcements.getPlayerReinforcedBlocks().contains(reinforcedBlocks) || groupReinforcements.getGroupReinforcedBlocks().contains(reinforcedBlocks))) {
+            if (reinforcedBlocks.getRequiredHits() > reinforcementLevel || (bypassReinforcement && (playerReinforcements.getPlayerReinforcedBlocks().contains(reinforcedBlocks) || groupReinforcements.getGroupReinforcedBlocks().contains(reinforcedBlocks)))) {
                 // If the hits required is greater than the reinforcementLevel, the block is removed from the HashMap and the block is destroyed
                 reinforcedBlocksMap.remove(blockLocation);
 
-                List<ReinforcedBlocks> playerBlocks = playerReinforcements.getPlayerReinforcedBlocks();
-                List<ReinforcedBlocks> groupBlocks = groupReinforcements.getGroupReinforcedBlocks();
-
-                for (int i = 0; i < playerBlocks.size(); i++) {
-                    if (playerBlocks.get(i).getLocation().equals(blockLocation)) {
-                        playerBlocks.remove(i);
+                Iterator<ReinforcedBlocks> playerBlocksIterator = playerReinforcements.getPlayerReinforcedBlocks().iterator();
+                while (playerBlocksIterator.hasNext()) {
+                    if (playerBlocksIterator.next().getLocation().equals(blockLocation)) {
+                        playerBlocksIterator.remove();
                         break;
                     }
                 }
-                for (int i = 0; i < groupBlocks.size(); i++) {
-                    if (groupBlocks.get(i).getLocation().equals(blockLocation)) {
-                        groupBlocks.remove(i);
-                        break;
+                if (groupReinforcements.getGroupReinforcedBlocks().size() > 0) {
+                    Iterator<ReinforcedBlocks> groupBlocksIterator = groupReinforcements.getGroupReinforcedBlocks().iterator();
+                    while (groupBlocksIterator.hasNext()) {
+                        if (groupBlocksIterator.next().getLocation().equals(blockLocation)) {
+                            groupBlocksIterator.remove();
+                            break;
+                        }
+
                     }
                 }
 
