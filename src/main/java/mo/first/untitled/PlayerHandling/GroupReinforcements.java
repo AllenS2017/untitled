@@ -75,6 +75,29 @@ public class GroupReinforcements {
         player.sendMessage(ChatColor.RED + "You have been removed from " + this.getNameOfGroup());
     }
 
+    public void giveOwnership(Player groupAdmin, Player player, GroupReinforcements groupReinforcements) {
+        if (groupReinforcements == null) {
+            groupAdmin.sendMessage(ChatColor.RED + "You attempted to add someone to a group that does not exist");
+            return;
+        }
+        if (player == null) {
+            groupAdmin.sendMessage(ChatColor.RED + "This player does not exist");
+            return;
+        }
+        if (groupAdmin != this.groupAdmin) {
+            groupAdmin.sendMessage(ChatColor.RED + "You are not a group admin");
+            return;
+        }
+        if (!groupReinforcements.getPlayerArrayList().contains(player)) {
+            groupAdmin.sendMessage(ChatColor.RED + "To give ownership, the player must be in the group");
+            return;
+        }
+        this.setGroupAdmin(player);
+        this.getPlayerArrayList().add(groupAdmin);
+        player.sendMessage(ChatColor.AQUA + "You have been given ownership of the group");
+        groupAdmin.sendMessage(ChatColor.RED + "You have relinquished ownership of the group to " + player.getName());
+    }
+
     public HashMap<UUID, GroupReinforcements> getGroupReinforcementsHashMap() {
         return groupReinforcementsHashMap;
     }
