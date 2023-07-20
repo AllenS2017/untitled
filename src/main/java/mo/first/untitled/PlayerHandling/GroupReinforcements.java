@@ -37,7 +37,7 @@ public class GroupReinforcements {
             groupAdmin.sendMessage(ChatColor.RED + "You attempted to add someone to a group that does not exist");
             return;
         }
-        if (player == null) {
+        if (player.getPlayer() == null) {
             groupAdmin.sendMessage(ChatColor.RED + "This player does not exist");
             return;
         }
@@ -59,7 +59,7 @@ public class GroupReinforcements {
             groupAdmin.sendMessage(ChatColor.RED + "You attempted to add someone to a group that does not exist");
             return;
         }
-        if (player == null) {
+        if (player.getPlayer() == null) {
             groupAdmin.sendMessage(ChatColor.RED + "This player does not exist");
             return;
         }

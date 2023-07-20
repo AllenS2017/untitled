@@ -44,6 +44,27 @@ public class PlayerCommands implements CommandExecutor {
                 playerReinforcements.changeReinforcementMode(p, groupReinforcements);
                 return true;
             }
+            if (command.getName().equalsIgnoreCase("bunker")) {
+                if (args.length == 0) {
+                    p.sendMessage(ChatColor.RED + "You need to provide arguments for bunker");
+                    return false;
+                }
+
+                String subcommand = args[0];
+
+                if (subcommand.equalsIgnoreCase("create")) {
+                    if (args.length < 2) {
+                        p.sendMessage(ChatColor.RED + "You need to specify a name for the group");
+                        return false;
+                    }
+
+                    String groupName = args[1];
+                    GroupReinforcements group = new GroupReinforcements(p, groupName);
+                    p.sendMessage(ChatColor.AQUA + "New group " + groupName + "created");
+                    return true;
+
+                }
+            }
         }
         return false;
     }
