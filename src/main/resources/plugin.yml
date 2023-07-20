@@ -38,3 +38,6 @@ commands:
       display:
         description: Displays members of a group.
         usage: /<command> <subcommand> <group name>
+      mygroups:
+        description: Displays groups you are apart of.
+        usage: /<command> <subcommand>
