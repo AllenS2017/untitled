@@ -14,6 +14,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import javax.swing.*;
@@ -118,6 +119,7 @@ public class ReinforcingBlocks implements Listener {
         }
     }
 
+    // TODO: Finish this method
     @EventHandler
     public void placeReinforcedBlocks(BlockPlaceEvent e) {
 
@@ -139,15 +141,14 @@ public class ReinforcingBlocks implements Listener {
         if (!playerReinforcements.isReinforcementPlaceMode())
             return;
 
+        Inventory inv = player.getInventory();
+        // TODO: Make code iterate through inventory to see if the player has the items that they wanted to reinforce with
 
         if (playerReinforcements.isReinforcementMode()) {
             // code to place the block for the player himself
         } else if (playerReinforcements.isGroupReinforcementMode()) {
             // code to place the block for the group
         }
-
-        e.getBlock().getLocation();
-
     }
 
     // Command should only be available to admins

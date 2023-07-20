@@ -2,7 +2,6 @@ package mo.first.untitled.PlayerHandling;
 
 import mo.first.untitled.Reinforcement.ReinforcedBlocks;
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -60,7 +59,7 @@ public class PlayerReinforcements {
         }
     }
 
-    public void changePlaceMode(Player player, boolean forGroup) {
+    public void changePlaceMode(Player player, boolean forGroup, ItemStack itemStack) {
         // forGroup is true when player wants to place blocks for a group
         // forGroup is false when player wants to place blocks for himself
         if (forGroup) {
@@ -76,6 +75,11 @@ public class PlayerReinforcements {
         }
 
         this.setReinforcementPlaceMode(true); // setting place mode on when either group or individual reinforcement mode is chosen
+    }
+
+    // TODO: Don't know where to put this, finish later
+    public ItemStack getItemStackChoice(ItemStack itemStack) {
+        return itemStack;
     }
 
     public void stopPlaceMode(Player player) {
