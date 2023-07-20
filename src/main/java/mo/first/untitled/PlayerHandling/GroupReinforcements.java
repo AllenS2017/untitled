@@ -19,14 +19,14 @@ public class GroupReinforcements {
     private static HashMap<UUID, GroupReinforcements> publicGroupReinforcement = new HashMap<>();
     private HashMap<UUID, GroupReinforcements> groupReinforcementsHashMap = new HashMap<>();
 
-    private static HashSet<String> groupNames = new HashSet<>();
+    private static HashMap<String, GroupReinforcements> groupNames = new HashMap<>();
 
     public GroupReinforcements(Player groupAdmin, String nameOfGroup) {
-        if (groupNames.contains(nameOfGroup)) {
+        if (groupNames.containsKey(nameOfGroup)) {
             throw new IllegalArgumentException("The group name " + nameOfGroup + " is already taken.");
         } else {
             publicGroupReinforcement.put(groupAdmin.getUniqueId(), this);
-            groupNames.add(nameOfGroup);
+            groupNames.put(nameOfGroup, this);
             this.playerArrayList.add(groupAdmin);
             this.groupAdmin = groupAdmin;
             this.nameOfGroup = nameOfGroup;
@@ -170,11 +170,11 @@ public class GroupReinforcements {
         return "GroupReinforcements: " + getPlayerNamesAsString();
     }
 
-    public static HashSet<String> getGroupNames() {
+    public static HashMap<String, GroupReinforcements> getGroupNames() {
         return groupNames;
     }
 
-    public static void setGroupNames(HashSet<String> groupNames) {
+    public static void setGroupNames(HashMap<String, GroupReinforcements> groupNames) {
         GroupReinforcements.groupNames = groupNames;
     }
 }

@@ -81,7 +81,7 @@ public class PlayerCommands implements CommandExecutor {
 
                     String groupName = args[2];
 
-                    GroupReinforcements groupReinforcements = GroupReinforcements.getGroupNa
+                    GroupReinforcements groupReinforcements = GroupReinforcements.getGroupNames().getOrDefault(groupName, null);
                     if (groupReinforcements == null) {
                         p.sendMessage(ChatColor.RED + "This group name" + groupName + "does not exist, please check your spelling");
                     }
