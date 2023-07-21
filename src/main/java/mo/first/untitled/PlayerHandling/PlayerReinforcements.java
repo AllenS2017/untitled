@@ -2,6 +2,7 @@ package mo.first.untitled.PlayerHandling;
 
 import mo.first.untitled.Reinforcement.ReinforcedBlocks;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
@@ -79,6 +80,9 @@ public class PlayerReinforcements {
 
     // TODO: Don't know where to put this, finish later
     public ItemStack getItemStackChoice(ItemStack itemStack) {
+        if (itemStack.getType() != Material.DIAMOND && itemStack.getType() != Material.IRON_INGOT) {
+            return null;
+        }
         return itemStack;
     }
 

@@ -127,7 +127,7 @@ public class ReinforcingBlocks implements Listener {
         Player player = e.getPlayer();
         UUID playerID = player.getUniqueId();
 
-        if (PlayerReinforcements.playerReinforcementsHashMap.containsKey(player.getUniqueId())) {
+        if (PlayerReinforcements.playerReinforcementsHashMap.containsKey(playerID)) {
             playerReinforcements = PlayerReinforcements.playerReinforcementsHashMap.get(playerID);
         } else {
             playerReinforcements = new PlayerReinforcements(e.getPlayer());
@@ -144,8 +144,11 @@ public class ReinforcingBlocks implements Listener {
         Inventory inv = player.getInventory();
         // TODO: Make code iterate through inventory to see if the player has the items that they wanted to reinforce with
 
+        Location blockLocation = e.getBlock().getLocation();
+
+
         if (playerReinforcements.isReinforcementMode()) {
-            // code to place the block for the player himself
+
         } else if (playerReinforcements.isGroupReinforcementMode()) {
             // code to place the block for the group
         }

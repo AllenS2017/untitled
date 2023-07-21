@@ -49,6 +49,10 @@ public class PlayerCommands implements CommandExecutor {
                     playerReinforcements.changeReinforcementMode(p);
                     return true;
                 }
+                if (subcommand.equalsIgnoreCase("placemode")) {
+
+                }
+
                 if (subcommand.equalsIgnoreCase("grouprm")) {
                     if (playerReinforcements.getGroupReinforcements() == null) {
                         p.sendMessage(ChatColor.RED + " You are not part of a group");
