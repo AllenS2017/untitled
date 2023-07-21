@@ -9,6 +9,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import javax.swing.*;
 import java.util.UUID;
@@ -50,7 +51,19 @@ public class PlayerCommands implements CommandExecutor {
                     return true;
                 }
                 if (subcommand.equalsIgnoreCase("placemode")) {
+                    if (args.length > 1) {
+                        String groupName = args[1];
 
+                        GroupReinforcements groupReinforcements = GroupReinforcements.getGroupNames().getOrDefault(groupName, null);
+                        if (groupReinforcements == null) {
+                            p.sendMessage(ChatColor.RED + "This group name" + groupName + "does not exist, please check your spelling");
+                            return false;
+                        }
+                        playerReinforcements.changePlaceMode(p, true, p.getInventory().getItemInMainHand());
+                    } else {
+                        playerReinforcements.changePlaceMode(p, false, p.getInventory().getItemInMainHand());
+                    }
+                    return true;
                 }
 
                 if (subcommand.equalsIgnoreCase("grouprm")) {

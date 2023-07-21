@@ -74,7 +74,7 @@ public class PlayerReinforcements {
             this.setReinforcementMode(true);
             player.sendMessage(ChatColor.AQUA + "You have started individual reinforcement place mode");
         }
-
+        getItemStackChoice(itemStack);
         this.setReinforcementPlaceMode(true); // setting place mode on when either group or individual reinforcement mode is chosen
     }
 
