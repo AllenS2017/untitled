@@ -59,9 +59,11 @@ public class PlayerCommands implements CommandExecutor {
                             p.sendMessage(ChatColor.RED + "This group name" + groupName + "does not exist, please check your spelling");
                             return false;
                         }
-                        playerReinforcements.changePlaceMode(p, true, p.getInventory().getItemInMainHand());
+                        playerReinforcements.changePlaceMode(p, true);
+                        playerReinforcements.getItemStackChoice(p.getInventory().getItemInMainHand());
                     } else {
-                        playerReinforcements.changePlaceMode(p, false, p.getInventory().getItemInMainHand());
+                        playerReinforcements.changePlaceMode(p, false);
+                        playerReinforcements.getItemStackChoice(p.getInventory().getItemInMainHand());
                     }
                     return true;
                 }

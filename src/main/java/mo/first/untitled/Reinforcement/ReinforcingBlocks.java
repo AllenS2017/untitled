@@ -126,6 +126,7 @@ public class ReinforcingBlocks implements Listener {
         PlayerReinforcements playerReinforcements;
         Player player = e.getPlayer();
         UUID playerID = player.getUniqueId();
+        ItemStack itemsInInventory;
 
         if (PlayerReinforcements.playerReinforcementsHashMap.containsKey(playerID)) {
             playerReinforcements = PlayerReinforcements.playerReinforcementsHashMap.get(playerID);
@@ -134,12 +135,30 @@ public class ReinforcingBlocks implements Listener {
             PlayerReinforcements.playerReinforcementsHashMap.put(playerID, playerReinforcements);
         }
 
+        ItemStack itemChoice = playerReinforcements.getItemChoice();
+
         if (!playerReinforcements.isReinforcementMode() && !playerReinforcements.isGroupReinforcementMode()) {
             return;
         }
-
         if (!playerReinforcements.isReinforcementPlaceMode())
             return;
+
+        Inventory inv = player.getInventory();
+        boolean inventoryEmpty = true;
+
+        if (playerReinforcements.isReinforcementPlaceMode()) {
+            if (inv.contains(itemChoice)) {
+                for (ItemStack item : inv.getContents()) {
+                    if (item != null && item.getType() == itemChoice.getType()) {
+                        inventoryEmpty = false;
+                    } else {
+                        inventoryEmpty = true;
+                        playerReinforcements.stopPlaceModestopPlaceMode;
+                    }
+                }
+            }
+        }
+
 
         Inventory inv = player.getInventory();
         // TODO: Make code iterate through inventory to see if the player has the items that they wanted to reinforce with

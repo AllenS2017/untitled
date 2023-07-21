@@ -19,6 +19,7 @@ public class PlayerReinforcements {
     private boolean groupReinforcementMode;
     private GroupReinforcements groupReinforcements;
     private boolean reinforcementPlaceMode;
+    private ItemStack itemChoice;
 
     public PlayerReinforcements(Player playerName) {
         this.playerName = playerName;
@@ -60,7 +61,7 @@ public class PlayerReinforcements {
         }
     }
 
-    public void changePlaceMode(Player player, boolean forGroup, ItemStack itemStack) {
+    public void changePlaceMode(Player player, boolean forGroup) {
         // forGroup is true when player wants to place blocks for a group
         // forGroup is false when player wants to place blocks for himself
         if (forGroup) {
@@ -74,21 +75,22 @@ public class PlayerReinforcements {
             this.setReinforcementMode(true);
             player.sendMessage(ChatColor.AQUA + "You have started individual reinforcement place mode");
         }
-        getItemStackChoice(itemStack);
         this.setReinforcementPlaceMode(true); // setting place mode on when either group or individual reinforcement mode is chosen
     }
 
     // TODO: Don't know where to put this, finish later
-    public ItemStack getItemStackChoice(ItemStack itemStack) {
+    public void getItemStackChoice(ItemStack itemStack) {
         if (itemStack.getType() != Material.DIAMOND && itemStack.getType() != Material.IRON_INGOT) {
-            return null;
+            return;
         }
-        return itemStack;
+        this.itemChoice = itemStack;
     }
 
     public void stopPlaceMode(Player player) {
         // turn off reinforcementPlaceMode
         this.setReinforcementPlaceMode(false);
+        this.setGroupReinforcementMode(false);
+        this.setReinforcementMode(false);
         player.sendMessage(ChatColor.AQUA + "You have stopped the reinforcement place mode");
     }
 
@@ -151,5 +153,13 @@ public class PlayerReinforcements {
 
     public void setPlayerReinforcedBlocks(ArrayList<ReinforcedBlocks> playerReinforcedBlocks) {
         this.playerReinforcedBlocks = playerReinforcedBlocks;
+    }
+
+    public ItemStack getItemChoice() {
+        return itemChoice;
+    }
+
+    public void setItemChoice(ItemStack itemChoice) {
+        this.itemChoice = itemChoice;
     }
 }
